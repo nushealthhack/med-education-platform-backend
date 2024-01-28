@@ -1,80 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
-<body> 
-  <div class="container mx-auto"> 
-      <h1>Defects Report Generator</h1> 
-
-      <div> 
-          <form id="input-sections" method="POST" action="/generate-document" enctype="multipart/form-data"> 
-              <input type="hidden" name="section_count" id="section_count"> 
-              <button id="generate-report" type="submit" class="my-3 btn btn-success">Generate Report</button> 
-          </form> 
-          <!-- Input sections will be added here --> 
-      </div> 
-
-      <button id="add-input" class="mt-3 btn btn-primary">Add Input Section</button> 
-
-      <script> 
-          document.addEventListener('DOMContentLoaded', function () { 
-              // Get the elements 
-              const inputSections = document.getElementById('input-sections'); 
-              const addInputButton = document.getElementById('add-input'); 
-              const sectionCountInput = document.getElementById('section_count'); 
-
-              // Counter to keep track of the input sections 
-              let sectionCount = 0; 
-
-              // Function to add a new input section 
-              function addInputSection() { 
-                  sectionCount++; 
-
-                  const newSection = document.createElement('div'); 
-                  newSection.innerHTML = ` 
-                      <div class="card mb-3"> 
-                          <div class="card-body"> 
-                              <h5 class="card-title">Input Form</h5> 
-                                  <div class="mb-3"> 
-                                      <label for="textInput" class="form-label">Text Input</label> 
-                                      <input type="text" class="form-control" name="input_${sectionCount}" placeholder="Input ${sectionCount}"> 
-                                  </div> 
-                                  <div class="mb-3"> 
-                                      <label for="selectDropdown" class="form-label">Dropdown</label> 
-                                      <select class="form-select" name="select_${sectionCount}"  id="selectDropdown"> 
-                                          <option selected>Select an option</option> 
-                                          <option value="option1">Option 1</option> 
-                                          <option value="option2">Option 2</option> 
-                                          <option value="option3">Option 3</option> 
-                                      </select> 
-                                  </div> 
-                                  <div class="mb-3"> 
-                                      <label for="textArea" class="form-label">Textarea</label> 
-                                      <textarea class="form-control" name="textarea_${sectionCount}" id="textArea" rows="4" placeholder="Enter text"></textarea> 
-                                  </div> 
-                                  <div class="mb-3"> 
-                                      <label for="imageUpload" class="form-label">Upload Image</label> 
-                                      <input type="file" multiple="true" class="form-control" name="image_${sectionCount}[]" id="imageUpload" multiple> 
-                                  </div> 
-                                  <button class="remove-input btn btn-danger">Remove</button> 
-                          </div> 
-                      </div> 
-                  `; 
-
-                  inputSections.appendChild(newSection); 
-
-                  // Add a click event to the "Remove" button 
-                  newSection.querySelector('.remove-input').addEventListener('click', function () { 
-                      inputSections.removeChild(newSection); 
-                  }); 
-                  sectionCountInput.value = sectionCount;
-                }
-              addInputButton.addEventListener("click", addInputSection)
-            });
-      </script>
+<body>
+    <h1>Upload PDF</h1>
+    <form action="/upload-pdf" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".pdf" required>
+        <button type="submit">Upload</button>
+    </form>
 </body>
 </html>
