@@ -41,9 +41,10 @@ def generate_document():
 
 @app.route('/get-folders')
 def get_all_folders():
-  pathname = './images'
-  items = os.listdir(pathname)
-  folders = [item for item in items if os.path.isdir(os.path.join(pathname, item))]
+  items = os.listdir('./images')
+  path_name = './images'
+  folders = [item for item in items if os.path.isdir(os.path.join(path_name, item))]
+  print(f'folders {folders}')
   return folders
 
 @app.route('/get-images-folders')
