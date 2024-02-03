@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import math
 import sys
 import os
+import base64
+import json
 sys.prefix = 'C:/Users/randa/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0/LocalCache/local-packages'
 from ironpdf import *
 
@@ -29,16 +31,33 @@ def generate_document():
   # Handle the file, for example, save it to a folder
   file.save('uploads/' + file.filename)
   pdf = PdfDocument.FromFile("./uploads/" + file.filename)
+  filename_list = file.filename.split(".")
+  filename_list_without_extension = filename_list[:len(filename_list)-1]
+  filename_without_extension = ".".join(filename_list_without_extension)
   # Extract all pages to a folder as image files
-  pdf.RasterizeToImageFiles(f"images/{file.filename}/{file.filename}*.png",DPI=96)
+  pdf.RasterizeToImageFiles(f"images/{filename_without_extension}/{filename_without_extension}_*.png",DPI=96)
 
   return 'File uploaded successfully!'
 
-@app.route('./get-folders')
+@app.route('/get-folders')
 def get_all_folders():
-  items = os.listdir('./images')
-  folders = [item for item in items if os.path.isdir(os.path.join(path, item))]
+  pathname = './images'
+  items = os.listdir(pathname)
+  folders = [item for item in items if os.path.isdir(os.path.join(pathname, item))]
   return folders
+
+@app.route('/get-images-folders')
+def get_image_folders():
+  param_value = request.args.get('folder')
+  pathname = './images/' + param_value
+  items = os.listdir(pathname)
+  res = []
+  for item in items:
+    with open(pathname + '/' + item, "rb") as img_file:
+      my_string = base64.b64encode(img_file.read()).decode("utf-8")
+      res.append(my_string)
+  return json.dumps({"success": 1, "images": res})
+
 
     
 if __name__ == '__main__':
